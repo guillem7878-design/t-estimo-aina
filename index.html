@@ -3646,85 +3646,6 @@
   }
 
 
-  /* ---- tocadiscos de cantonada: nomes als primers dies ---- */
-  .vinyl{
-    position:absolute;
-    left: clamp(12px, 2vw, 22px);
-    bottom: clamp(12px, 2vw, 22px);
-    z-index: 60;
-    width: 62px; height: 62px;
-    padding:0; border:none; background:none;
-    cursor:pointer;
-    opacity:0; visibility:hidden;
-    transform: translateY(10px) scale(0.9);
-    transition: opacity .5s ease, transform .5s cubic-bezier(.2,.9,.3,1), visibility .5s;
-  }
-  .vinyl.show{ opacity:1; visibility:visible; transform:none; }
-  .vinyl-disc{
-    position:absolute; inset:0;
-    border-radius:50%;
-    background:
-      radial-gradient(circle at 34% 30%, rgba(255,255,255,0.16), transparent 42%),
-      radial-gradient(circle, #1a1f27 0 32%, #0d1116 32% 100%);
-    box-shadow: 0 10px 22px rgba(0,0,0,0.55), inset 0 0 0 1px rgba(242,235,221,0.16);
-    animation: vinylSpin 3.6s linear infinite;
-    animation-play-state: paused;
-  }
-  .vinyl.playing .vinyl-disc{ animation-play-state: running; }
-  @keyframes vinylSpin{ to{ transform: rotate(360deg); } }
-  .vinyl-groove{
-    position:absolute; inset:9px;
-    border-radius:50%;
-    border:1px solid rgba(242,235,221,0.1);
-  }
-  .vinyl-groove.g2{ inset:15px; border-color: rgba(242,235,221,0.07); }
-  .vinyl-label{
-    position:absolute; inset:38%;
-    border-radius:50%;
-    background: radial-gradient(circle at 40% 35%, #D9584F, #9B2F28);
-    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.35);
-  }
-  .vinyl-label::after{
-    content:''; position:absolute; inset:41%;
-    border-radius:50%; background: rgba(12,14,18,0.9);
-  }
-  .vinyl-arm{
-    position:absolute;
-    right:-3px; top:6px;
-    width:30px; height:3px;
-    border-radius:3px;
-    background: linear-gradient(90deg, rgba(242,235,221,0.75), rgba(242,235,221,0.35));
-    transform-origin: right center;
-    transform: rotate(-38deg);
-    transition: transform .5s cubic-bezier(.2,.9,.3,1);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-  }
-  .vinyl.playing .vinyl-arm{ transform: rotate(-6deg); }
-  .vinyl-waves{
-    position:absolute; right:-20px; top:50%;
-    display:flex; align-items:flex-end; gap:2px;
-    height:16px; transform: translateY(-50%);
-    opacity:0; transition: opacity .4s;
-  }
-  .vinyl.playing .vinyl-waves{ opacity:0.75; }
-  .vinyl-waves i{
-    width:2px; height:5px; border-radius:2px;
-    background: var(--paper);
-    animation: vinylWave 0.9s ease-in-out infinite;
-  }
-  .vinyl-waves i:nth-child(2){ animation-delay:.15s; height:11px; }
-  .vinyl-waves i:nth-child(3){ animation-delay:.3s; height:7px; }
-  @keyframes vinylWave{
-    0%,100%{ transform: scaleY(0.5); }
-    50%{ transform: scaleY(1.5); }
-  }
-  .vinyl:hover .vinyl-disc{ box-shadow: 0 14px 28px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(242,235,221,0.3); }
-  @media (max-width: 720px){
-    .vinyl{ width:48px; height:48px; left:10px; bottom:10px; }
-    .vinyl-arm{ width:22px; top:4px; }
-    .vinyl-waves{ display:none; }
-  }
-
 </style>
 </head>
 <body>
@@ -3825,15 +3746,6 @@
         </div>
       </div>
 
-      <button class="vinyl" id="vinylBtn" aria-label="Posar o aturar la canco">
-        <span class="vinyl-disc">
-          <span class="vinyl-groove"></span>
-          <span class="vinyl-groove g2"></span>
-          <span class="vinyl-label"></span>
-        </span>
-        <span class="vinyl-arm"></span>
-        <span class="vinyl-waves"><i></i><i></i><i></i></span>
-      </button>
       <div class="content-view" id="contentView">
         <div class="cv-bg"></div>
         <button class="cv-back" id="cvBack" onclick="backToChoose()">‹ tornar</button>
@@ -4351,13 +4263,13 @@ const DAYS = [
     ]
   },
   { day:6,  code:"5", codeAlt:["CINC"],  icon:"⛰️", title:"Setcases",                     place:"Setcases", text:"Segurament el lloc on més il·lusió em feia anar amb tu per tot el que m'havies dit, que era tan important per a tu i que només portaries a qui sigués tu futuro marido.\n\nTot i que vam anar a unes dates super apretades i pocs dies, el dia que vam poder aprofitar em va encantar, a més el poble estava super chulo i el fet d'estar allà amb tu em feia sentir molt especial, a més vam menjar el famoso yogurt helado que tant de temps portaves donant per cul jajaj, estaba bueno pero ya nunca más.\n\nVa ser una putada que just per dos dies que pujem et vingués el mal de panxa tan fort aquella nit, després de donar-me la polsera que no m'he tret des del dia que me la vas donar i la carta que també tinc guardada... Veure't com estaves em donava una por...\n\nPerò bueno, vaig fer tot el que vaig poder perquè la meva princesa estigués el millor possible, a mi només amb el fet d'estar allà amb tu ja em feia feliç i desitjaria que sempre que t'hagués de passar pogués estar per fer-te companyia com et vaig fer aquell dia, quan no estic i no puc saber com estàs em preocupo tant..., com va dir ta mare jo crec que va ser la prueba definitiva. Espero que la meva ajuda en aquell moment et servís d'algo, almenys per ni que sigui distreure't una mica i treure't algun somriure espontani.\n\nSetcases merece una segunda parte aquests mesos, vaig disfrutar molt el temps que vam passar per allà los dos solos i estic segur que la propera vegada serà encara millor\n\nAllà on vaig soc més feliç amb tu, no hi ha res que m'agradi més que compartir noves experiències i anar a llocs nous com a parella. Gràcies per portar-me al teu lloc segur, t'estimo mi vida, ets la millor nòvia del món.", photos:[], layout:"mountain", song:null, hint:"Quants condons vam dir que gastaríem la nit de Setcases segons les nostres canastes?" },
-  { day:7,  code:"DIA7",  icon:"💋", title:"El nostre primer petó",        place:"", text:"Aquest mateix dia, fa 5 mesos, després de tornar d'una setmana de viatge a Grècia on no em vaig desenganxar del mòbil en tot el dia per culpa teva (jo encantat), va ser el dia que ens vam donar el primer petó.\n\nHa sigut el dia més surrealista que he viscut mai. No saps les ganes que tenia que arribés aquell moment. Vam passar la tarda a Puiggraciós, on et vaig regalar la polsera i on et vas estar pelant de fred tota la nit fins que no em van quedar més capes de roba i vam haver de marxar.\n\nPensava que s'havia acabat el dia, la veritat és que jo estava més que satisfet d'haver passat la tarda i la nit junts. Però quan em vas dir que encara no et deixés a casa, se'm van posar els pèls de punta.\n\nNo m'oblidaré mai d'aquest dia, i encara menys del moment del petó. No sé fins a quina hora vam estar dins del cotxe, però estava sent el millor dia de la meva vida. No em podia creure que allò hagués passat de veritat; em vaig quedar tocat del cap durant una setmana, em vaig sentir tan feliç i còmode.\n\nGràcies per atrevir-te a donar el pas. Jo tenia moltíssims dubtes de si era massa aviat o no, i no em podia permetre que sortís malament per segon cop. Em vas treure tota la por en un moment.\n\nRecordaré sempre el 7 d'abril com un dels millors dies de la meva vida.", photos:[], layout:"kiss", song:null, hint:"Si el primer petó te'l recordes, això encara més: la paraula DIA i el número del segell." },
+  { day:7,  code:"3", codeAlt:["A LES 3","LES 3","3 DEL MATI","LES 3 DEL MATI","TRES"],  icon:"💋", title:"El nostre primer petó",        place:"", text:"Aquest mateix dia, fa 5 mesos, després de tornar d'una setmana de viatge a Grècia on no em vaig desenganxar del mòbil en tot el dia per culpa teva (jo encantat), va ser el dia que ens vam donar el primer petó.\n\nHa sigut el dia més surrealista que he viscut mai. No saps les ganes que tenia que arribés aquell moment. Vam passar la tarda a Puiggraciós, on et vaig regalar la polsera i on et vas estar pelant de fred tota la nit fins que no em van quedar més capes de roba i vam haver de marxar.\n\nPensava que s'havia acabat el dia, la veritat és que jo estava més que satisfet d'haver passat la tarda i la nit junts. Però quan em vas dir que encara no et deixés a casa, se'm van posar els pèls de punta.\n\nNo m'oblidaré mai d'aquest dia, i encara menys del moment del petó. No sé fins a quina hora vam estar dins del cotxe, però estava sent el millor dia de la meva vida. No em podia creure que allò hagués passat de veritat; em vaig quedar tocat del cap durant una setmana, em vaig sentir tan feliç i còmode.\n\nGràcies per atrevir-te a donar el pas. Jo tenia moltíssims dubtes de si era massa aviat o no, i no em podia permetre que sortís malament per segon cop. Em vas treure tota la por en un moment.\n\nRecordaré sempre el 7 d'abril com un dels millors dies de la meva vida.", photos:[], layout:"kiss", song:null, hint:"Fins a quina hora vam estar al cotxe el dia del primer petó?" },
   { day:8,  code:"MATALÀS", codeAlt:["EL MATALÀS","COLCHÓN","EL COLCHÓN","MATALAP"],  icon:"🐶", title:"El Drako",                     place:"", text:"El Drako ha tingut un paper molt important aquests dies que has estat tan lluny, és l'únic que em feia \"connectar\" una mica amb tu, em donava molta pau treure'l a passejar cada dia.\n\nAmb ell no em sentia sol ja que se li veia a la cara que us trobava infinit a faltar, igual que jo, crec que també ho ha notat, por eso me ha cogido cariño jaja.\n\nLa verdad que el Derek m'ho havia pintat pitjor, però el tio se porta muy bien, da gusto sacarlo.\n\nPor todo esto el Drako es mereixia un segell en un d'aquests dies.\n\nDir-te que he cuidat al Drako com si fos el meu fill, espero que quan torni se note que me ha echado un poco de menos... no como mi mujer {{trista}}\n\nÉs broma, et trobo molt a faltar i segur que tu també a mi, estic desitjant donar-te l'abraçada més forta que pugui.", photos:[], layout:"dog", song:null, hint:"Què és el que més mal ha rebut de tota la casa mentre el Derek i jo cuidàvem el Drako?" },
-  { day:9,  code:"DIA9",  icon:"🎂", title:"Els meus 20",                  place:"", text:"Aquest és un dels dies que més m'he emocionat per amor sense dubte. A part de la carn que estaba buenísima como mi mujer, va ser com que al sopar se me olvidó todo, i no m'esperava per res trobar-me el que em vas preparar a la meva habitació.\n\nÉs el regal més bonic que m'han fet mai, el nivell de detall a tot, la decoració, els regals, la carta, què més puc demanar, mai m'havia sentit així abans, em notava tan desprotegit jajaj, em faltaven paraules per agrair-te el que vas fer per mi, t'ho emportes tot a l'extrem i me encanta quan és per fer coses així.\n\nM'he llegit la teva carta com a mínim 5 cops i és impossible no emocionar-me 2 mesos després i encara la llegeixo com si fos el primer dia.\n\nEts la millor nòvia del món, no ets ni mig conscient de lo feliç que m'arribes a fer, i és una felicitat que només tu pots aconseguir.\n\nMai oblidaré els meus 20 i serà gràcies a tu, gràcies per fer-ho tot tan bonic. T'estimo mi vida", photos:[], layout:"night", song:null, hint:"El número no és el dels meus anys, eh. És la paraula DIA i el número d'aquest segell." },
+  { day:9,  code:"ET TROBO A FALTAR", codeAlt:["T'ESTIMO","TE ECHO DE MENOS","TE QUIERO","TROBO A FALTAR"],  icon:"🎂", title:"Els meus 20",                  place:"", text:"Aquest és un dels dies que més m'he emocionat per amor sense dubte. A part de la carn que estaba buenísima como mi mujer, va ser com que al sopar se me olvidó todo, i no m'esperava per res trobar-me el que em vas preparar a la meva habitació.\n\nÉs el regal més bonic que m'han fet mai, el nivell de detall a tot, la decoració, els regals, la carta, què més puc demanar, mai m'havia sentit així abans, em notava tan desprotegit jajaj, em faltaven paraules per agrair-te el que vas fer per mi, t'ho emportes tot a l'extrem i me encanta quan és per fer coses així.\n\nM'he llegit la teva carta com a mínim 5 cops i és impossible no emocionar-me 2 mesos després i encara la llegeixo com si fos el primer dia.\n\nEts la millor nòvia del món, no ets ni mig conscient de lo feliç que m'arribes a fer, i és una felicitat que només tu pots aconseguir.\n\nMai oblidaré els meus 20 i serà gràcies a tu, gràcies per fer-ho tot tan bonic. T'estimo mi vida", photos:[], layout:"night", song:null, hint:"Quina és la paraula que més t'he repetit aquest mes separat de tu?" },
   { day:10, code:"GT3RS", icon:"🍽️", title:"El primer sopar en família",   place:"", text:"Tot va començar per un divendres que no vas voler quedar amb els leones, me'n recordo que vaig insistir molt perquè feia molt que no et veia, i em vas proposar de veure'ns un altre dia (suposo que tot el grup) però listo de mi me tiré el triple de si volies quedar el dissabte, me'n recordo del moment i tot jaja que et vaig preguntar si amb el grup o sol i em vas dir que no sabies... PUES SOLO.\n\nEstava muy cagao la verdad, se'm feia una mica raro que m'haguessis dit que sí a quedar els dos sols, no me lo podía creer. No sé ni quantes hores ens vam tirar muntant el Lego però si vam trigar més és perquè ho vaig allargar a propòsit.\n\nLa cosa va ser quan van arribar els teus pares i em va dir ta mare de quedar-me a sopar, se me cayeron los huevos al suelo, estava jo que no sabia què dir, estava molt nerviós. Però bueno, va anar bé i sirvió de primera toma de contacto i que el jefe em fes el primer chequeo.\n\nNo me'n recordo de gaire més, era todo muy raro, no m'hauria imaginat que estigués anant tot per on volia tan ràpid, però la veritat que va anar de puta mare i el Lego quedó muy guapo, bendito sea el día que vi el Lego y te lo compré para que lo montáramos juntos.", photos:[], layout:"scan", song:null, hint:"Aquella tarda vam estar hores muntant-lo. El nom del model del cotxe, tal com surt a la caixa, tot junt i sense espais." },
   { day:11, openQuestion:"Què és el que més has trobat a faltar aquest mes sense mi?", minChars:15, icon:"🎁", title:"L'acomiadament abans del mes separats", place:"La nit abans que marxessis", text:"Que dur va ser... Mai m'oblidaré d'aquella nit després de tornar de l'hospital, saber que m'havia d'acomiadar de tu durant un mes, que estaria 30 dies sense poder tocar-te ni donar-te un petó. El pitjor és que aquell dia, tot i que estava trist, no era ni mig conscient del que em venia. Hagués sabut aquell dia el que he sentit aquesta setmana i hauria plorat 1000 cops més, segurament t'hagués segrestat perquè no poguessis viatjar...\n\nM'he adonat de lo important que ets realment per mi, que et necessito, i que la meva vida no és igual si no puc compartir-la amb tu. Se'ns va fer curta l'última nit, m'hagués quedat allà estirat amb tu tot el dia. Et trobo molt a faltar.\n\nCada dia t'estimo més i tinc més ganes de veure't. Espero que mai ens tornem a separar tant de temps, no estaré preparat.", photos:[], layout:"farewell", song:null, hint:"Avui no hi ha cap codi. Només has d'escriure'm què és el que més has trobat a faltar aquest mes." },
-  { day:12, code:"CASA", codeAlt:["A CASA"], icon:"✈️", title:"Estic tornant", place:"Mentre sóc a l'avió", text:"T'intentaré escriure el dia que estaré al vol, així tens una carta en temps real i no escrita 10 dies abans.\n\nSi no puc pel wifi, t'ho enviaré per WhatsApp.\n\nT'estimo, mi amor. Ja queda res per veure'ns :)", photos:[], layout:"flight", song:null, flightTo:"CASA", flightEta:"ARRIBADA PREVISTA: AVUI", hint:"On seré d'aquí a unes hores? Una sola paraula." },
-  { day:13, code:"DIA13", icon:"🏡", title:"Benvinguda a casa",            place:"El dia que tornes", text:"Aquesta no la llegiràs aquí. Gira't, que te la dono jo.", photos:[], layout:"home", song:null, hint:"L'últim de tots. Ja saps com va: la paraula DIA i el número d'aquest segell." },
+  { day:12, code:"BLAU", codeAlt:["AZUL","BLUE"], icon:"✈️", title:"Estic tornant", place:"Mentre sóc a l'avió", text:"T'intentaré escriure el dia que estaré al vol, així tens una carta en temps real i no escrita 10 dies abans.\n\nSi no puc pel wifi, t'ho enviaré per WhatsApp.\n\nT'estimo, mi amor. Ja queda res per veure'ns :)", photos:[], layout:"flight", song:null, flightTo:"CASA", flightEta:"ARRIBADA PREVISTA: AVUI", hint:"Quin color és el meu preferit? (a veure si falles)" },
+  { day:13, code:"PORFIN", codeAlt:["PER FI","POR FIN","PORFI"], icon:"🏡", title:"Benvinguda a casa",            place:"El dia que tornes", text:"Aquesta no la llegiràs aquí. Gira't, que te la dono jo.", photos:[], layout:"home", song:null, hint:"Avui no hi ha pista. Aquesta la saps de sobres." },
 ];
 
 /* ==== FOTOS-INICI · generat per fotos.py, no editar a ma ==== */
@@ -4518,6 +4430,10 @@ function checkCode(){
       return;
     }
     try{ localDB.set('answer-day-' + activeDay.day, answer); }catch(e){}
+    // la resposta queda escrita al xat, per llegir-la despres
+    if(chatState){
+      pushMessage(chatState, { dir:'out', kind:'text', text: answer, time: nowTimeStr() });
+    }
     if(!unlocked.includes(activeDay.day)){
       unlocked.push(activeDay.day);
       saveState();
@@ -4790,41 +4706,6 @@ function buildArrows(len, getIdx, setIdx){
   return wrap;
 }
 
-// cançó de fons dels primers dies (del 3 al 9)
-const SONG_FILE = "canco-dia3-9.mp3";
-const SONG_DAYS = [3, 4, 5, 6, 7, 8, 9];
-const songAudio = new Audio(SONG_FILE);
-songAudio.loop = true;
-songAudio.volume = 0.42;
-
-function setupSongFor(day){
-  const btn = document.getElementById('vinylBtn');
-  if(!btn) return;
-  const on = SONG_DAYS.includes(day);
-  btn.classList.toggle('show', on);
-  if(!on){
-    songAudio.pause();
-    btn.classList.remove('playing');
-  }
-}
-function toggleSong(){
-  const btn = document.getElementById('vinylBtn');
-  if(songAudio.paused){
-    songAudio.play().then(() => btn.classList.add('playing')).catch(() => {});
-  }else{
-    songAudio.pause();
-    btn.classList.remove('playing');
-  }
-}
-document.getElementById('vinylBtn').addEventListener('click', toggleSong);
-
-function stopSong(){
-  songAudio.pause();
-  songAudio.currentTime = 0;
-  const btn = document.getElementById('vinylBtn');
-  if(btn) btn.classList.remove('playing', 'show');
-}
-
 function showContent(d, animateStamp, parentDay){
   document.getElementById('codeForm').style.display = 'none';
   document.getElementById('chooseView').classList.remove('show');
@@ -4837,7 +4718,6 @@ function showContent(d, animateStamp, parentDay){
   document.getElementById('cvPhotoSlide').classList.remove('show');
 
   document.getElementById('viewEyebrow').textContent = `DIA ${activeDay.day}`;
-  setupSongFor(activeDay.day);
   document.getElementById('lcmWatermark').textContent = d.icon || '';
   document.getElementById('viewTitle').textContent = d.title;
   document.getElementById('viewPlace').textContent = d.place || '';
@@ -5460,7 +5340,6 @@ function showContent(d, animateStamp, parentDay){
 
 function closeModal(){
   document.getElementById('overlay').classList.remove('show');
-  stopSong();
 }
 document.getElementById('overlay').addEventListener('click', e => {
   if(e.target.id === 'overlay') closeModal();
