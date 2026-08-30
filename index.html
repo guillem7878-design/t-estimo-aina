@@ -3646,6 +3646,43 @@
   }
 
 
+
+  /* ---- dia 3: la segona foto, a baix a l'esquerra, respirant amb la llum ---- */
+  .cr-photo{
+    animation: crBreathe 7s ease-in-out infinite;
+  }
+  .cr-photo2{
+    top:auto; right:auto;
+    bottom: clamp(0.8rem, 3vw, 1.6rem);
+    left: clamp(0.8rem, 3vw, 1.6rem);
+    width: clamp(66px, 10.5vw, 104px);
+    transform: rotate(-4deg);
+    animation-delay: -3.5s;
+    box-shadow: 0 14px 30px rgba(0,0,0,0.55), 0 0 0 1px rgba(245,203,122,0.08);
+  }
+  .cr-photo2:hover{ transform: rotate(0deg) scale(1.06); }
+  @keyframes crBreathe{
+    0%,100%{ filter: brightness(0.88); }
+    50%    { filter: brightness(1.06); }
+  }
+  @media (max-width: 720px){
+    .cr-photo2{ width: 84px; bottom: 0.7rem; left: 0.7rem; }
+  }
+
+
+  /* ---- foto dins del xat ---- */
+  .wa-photo-bubble{ padding: 4px 4px 6px; max-width: min(78%, 260px); }
+  .wa-photo-bubble img{
+    display:block; width:100%; height:auto;
+    border-radius: 6px; cursor: zoom-in;
+  }
+  .wa-photo-bubble span:not(.wa-meta){
+    display:block;
+    padding: 6px 6px 0;
+    font-size: 0.9em;
+  }
+  .wa-photo-bubble .wa-meta{ padding-right: 4px; }
+
 </style>
 </head>
 <body>
@@ -3866,6 +3903,8 @@ const YOUR_NAME = "Guillem";     // tu nombre (firma abajo del todo)
 // Los 3 mensajes fijos de introducción (solo se escriben con animación la primera vez que abre el chat)
 const INTRO_MESSAGES = [
   "Hola amor, segurament no saps què és això. La meva idea és que estiguis acompanyada dels nostres records durant els dies que em queden per tornar-nos a veure.",
+  "Espero que el Drako no t'hagi destrossat la sorpresa. Vaig entrar 3 vegades a casa perquè no em donava temps a fer-ho tot, per tenir-t'ho preparat per quan arribessis. Espero que t'hagi agradat.",
+  { photo: "wa-sorpresa.jpg" },
   "Cada dia et donaré una pista amb la qual hauràs de desbloquejar el segell que toqui. Per demanar-la hauràs d'escriure'm al WhatsApp, però com no sé si et podré respondre quan vulguis per la diferència horària, també la podràs demanar en aquest xat 😛",
   "De res per entretenir-te. T'estimoo 🤍"
 ];
@@ -4039,9 +4078,23 @@ function renderBubbleEl(msg, instant){
   }
   const div = document.createElement('div');
   div.className = `wa-bubble ${msg.dir === 'out' ? 'wa-out' : 'wa-in'} wa-message${instant ? ' show' : ''}`;
-  const span = document.createElement('span');
-  span.textContent = msg.text;
-  div.appendChild(span);
+  if(msg.kind === 'photo'){
+    div.classList.add('wa-photo-bubble');
+    const im = document.createElement('img');
+    im.src = msg.photo;
+    im.alt = '';
+    im.onclick = () => openNightLightbox([msg.photo], 0, '');
+    div.appendChild(im);
+    if(msg.text){
+      const cap = document.createElement('span');
+      cap.textContent = msg.text;
+      div.appendChild(cap);
+    }
+  }else{
+    const span = document.createElement('span');
+    span.textContent = msg.text;
+    div.appendChild(span);
+  }
   const meta = document.createElement('span');
   meta.className = 'wa-meta';
   meta.innerHTML = `${msg.time || ''} ${msg.dir === 'out' ? '<span class="wa-tick read">✓✓</span>' : ''}`;
@@ -4099,7 +4152,16 @@ function runIntroSequence(state){
   }
   return messages.reduce((chain, msg, i) => {
     return chain.then(() => new Promise(resolve => {
-      botSay(state, msg, i === 0 ? 1300 : 1400, resolve);
+      if(typeof msg === 'object' && msg.photo){
+        const typingEl = addTyping('in');
+        setTimeout(() => {
+          typingEl.remove();
+          pushMessage(state, { dir:'in', kind:'photo', photo: msg.photo, text: msg.text || '', time: nowTimeStr() });
+          resolve();
+        }, prefersReducedMotion ? 0 : 1600);
+      }else{
+        botSay(state, msg, i === 0 ? 1300 : 1400, resolve);
+      }
     })).then(() => new Promise(r => setTimeout(r, prefersReducedMotion ? 0 : 450)));
   }, Promise.resolve());
 }
@@ -4186,7 +4248,7 @@ function handleSend(){
       botSay(chatState, pickRandom(NUDGE_REPLIES), 1100);
     }
   } else {
-    botSay(chatState, pickRandom(GENERIC_REPLIES), 1200);
+    botSay(chatState, "Al Guillem li agradaria més que li diguessis per WhatsApp...", 1200);
   }
 }
 document.getElementById('waSendBtn').addEventListener('click', handleSend);
@@ -4267,13 +4329,14 @@ const DAYS = [
   { day:8,  code:"MATALÀS", codeAlt:["EL MATALÀS","COLCHÓN","EL COLCHÓN","MATALAP"],  icon:"🐶", title:"El Drako",                     place:"", text:"El Drako ha tingut un paper molt important aquests dies que has estat tan lluny, és l'únic que em feia \"connectar\" una mica amb tu, em donava molta pau treure'l a passejar cada dia.\n\nAmb ell no em sentia sol ja que se li veia a la cara que us trobava infinit a faltar, igual que jo, crec que també ho ha notat, por eso me ha cogido cariño jaja.\n\nLa verdad que el Derek m'ho havia pintat pitjor, però el tio se porta muy bien, da gusto sacarlo.\n\nPor todo esto el Drako es mereixia un segell en un d'aquests dies.\n\nDir-te que he cuidat al Drako com si fos el meu fill, espero que quan torni se note que me ha echado un poco de menos... no como mi mujer {{trista}}\n\nÉs broma, et trobo molt a faltar i segur que tu també a mi, estic desitjant donar-te l'abraçada més forta que pugui.", photos:[], layout:"dog", song:null, hint:"Què és el que més mal ha rebut de tota la casa mentre el Derek i jo cuidàvem el Drako?" },
   { day:9,  code:"ET TROBO A FALTAR", codeAlt:["T'ESTIMO","TE ECHO DE MENOS","TE QUIERO","TROBO A FALTAR"],  icon:"🎂", title:"Els meus 20",                  place:"", text:"Aquest és un dels dies que més m'he emocionat per amor sense dubte. A part de la carn que estaba buenísima como mi mujer, va ser com que al sopar se me olvidó todo, i no m'esperava per res trobar-me el que em vas preparar a la meva habitació.\n\nÉs el regal més bonic que m'han fet mai, el nivell de detall a tot, la decoració, els regals, la carta, què més puc demanar, mai m'havia sentit així abans, em notava tan desprotegit jajaj, em faltaven paraules per agrair-te el que vas fer per mi, t'ho emportes tot a l'extrem i me encanta quan és per fer coses així.\n\nM'he llegit la teva carta com a mínim 5 cops i és impossible no emocionar-me 2 mesos després i encara la llegeixo com si fos el primer dia.\n\nEts la millor nòvia del món, no ets ni mig conscient de lo feliç que m'arribes a fer, i és una felicitat que només tu pots aconseguir.\n\nMai oblidaré els meus 20 i serà gràcies a tu, gràcies per fer-ho tot tan bonic. T'estimo mi vida", photos:[], layout:"night", song:null, hint:"Quina és la paraula que més t'he repetit aquest mes separat de tu?" },
   { day:10, code:"GT3RS", icon:"🍽️", title:"El primer sopar en família",   place:"", text:"Tot va començar per un divendres que no vas voler quedar amb els leones, me'n recordo que vaig insistir molt perquè feia molt que no et veia, i em vas proposar de veure'ns un altre dia (suposo que tot el grup) però listo de mi me tiré el triple de si volies quedar el dissabte, me'n recordo del moment i tot jaja que et vaig preguntar si amb el grup o sol i em vas dir que no sabies... PUES SOLO.\n\nEstava muy cagao la verdad, se'm feia una mica raro que m'haguessis dit que sí a quedar els dos sols, no me lo podía creer. No sé ni quantes hores ens vam tirar muntant el Lego però si vam trigar més és perquè ho vaig allargar a propòsit.\n\nLa cosa va ser quan van arribar els teus pares i em va dir ta mare de quedar-me a sopar, se me cayeron los huevos al suelo, estava jo que no sabia què dir, estava molt nerviós. Però bueno, va anar bé i sirvió de primera toma de contacto i que el jefe em fes el primer chequeo.\n\nNo me'n recordo de gaire més, era todo muy raro, no m'hauria imaginat que estigués anant tot per on volia tan ràpid, però la veritat que va anar de puta mare i el Lego quedó muy guapo, bendito sea el día que vi el Lego y te lo compré para que lo montáramos juntos.", photos:[], layout:"scan", song:null, hint:"Aquella tarda vam estar hores muntant-lo. El nom del model del cotxe, tal com surt a la caixa, tot junt i sense espais." },
-  { day:11, openQuestion:"Què és el que més has trobat a faltar aquest mes sense mi?", minChars:15, icon:"🎁", title:"L'acomiadament abans del mes separats", place:"La nit abans que marxessis", text:"Que dur va ser... Mai m'oblidaré d'aquella nit després de tornar de l'hospital, saber que m'havia d'acomiadar de tu durant un mes, que estaria 30 dies sense poder tocar-te ni donar-te un petó. El pitjor és que aquell dia, tot i que estava trist, no era ni mig conscient del que em venia. Hagués sabut aquell dia el que he sentit aquesta setmana i hauria plorat 1000 cops més, segurament t'hagués segrestat perquè no poguessis viatjar...\n\nM'he adonat de lo important que ets realment per mi, que et necessito, i que la meva vida no és igual si no puc compartir-la amb tu. Se'ns va fer curta l'última nit, m'hagués quedat allà estirat amb tu tot el dia. Et trobo molt a faltar.\n\nCada dia t'estimo més i tinc més ganes de veure't. Espero que mai ens tornem a separar tant de temps, no estaré preparat.", photos:[], layout:"farewell", song:null, hint:"Avui no hi ha cap codi. Només has d'escriure'm què és el que més has trobat a faltar aquest mes." },
+  { day:11, code:"PLORANT", codeAlt:["PLORANT ABRAÇATS","ABRAÇATS","LLORANDO"], icon:"🎁", title:"L'acomiadament abans del mes separats", place:"La nit abans que marxessis", text:"Que dur va ser... Mai m'oblidaré d'aquella nit després de tornar de l'hospital, saber que m'havia d'acomiadar de tu durant un mes, que estaria 30 dies sense poder tocar-te ni donar-te un petó. El pitjor és que aquell dia, tot i que estava trist, no era ni mig conscient del que em venia. Hagués sabut aquell dia el que he sentit aquesta setmana i hauria plorat 1000 cops més, segurament t'hagués segrestat perquè no poguessis viatjar...\n\nM'he adonat de lo important que ets realment per mi, que et necessito, i que la meva vida no és igual si no puc compartir-la amb tu. Se'ns va fer curta l'última nit, m'hagués quedat allà estirat amb tu tot el dia. Et trobo molt a faltar.\n\nCada dia t'estimo més i tinc més ganes de veure't. Espero que mai ens tornem a separar tant de temps, no estaré preparat.", photos:[], layout:"farewell", song:null, hint:"Com vam acabar tots dos aquella nit?" },
   { day:12, code:"BLAU", codeAlt:["AZUL","BLUE"], icon:"✈️", title:"Estic tornant", place:"Mentre sóc a l'avió", text:"T'intentaré escriure el dia que estaré al vol, així tens una carta en temps real i no escrita 10 dies abans.\n\nSi no puc pel wifi, t'ho enviaré per WhatsApp.\n\nT'estimo, mi amor. Ja queda res per veure'ns :)", photos:[], layout:"flight", song:null, flightTo:"CASA", flightEta:"ARRIBADA PREVISTA: AVUI", hint:"Quin color és el meu preferit? (a veure si falles)" },
   { day:13, code:"PORFIN", codeAlt:["PER FI","POR FIN","PORFI"], icon:"🏡", title:"Benvinguda a casa",            place:"El dia que tornes", text:"Aquesta no la llegiràs aquí. Gira't, que te la dono jo.", photos:[], layout:"home", song:null, hint:"Avui no hi ha pista. Aquesta la saps de sobres." },
 ];
 
 /* ==== FOTOS-INICI · generat per fotos.py, no editar a ma ==== */
 const PHOTOS = {
+  "3": ["dia3-1.jpg", "dia3-2.jpg"],
   "4": ["dia4-1.jpg", "dia4-2.jpg", "dia4-3.jpg", "dia4-4.jpg", "dia4-5.jpg", "dia4-6.jpg", "dia4-7.jpg", "dia4-8.jpg", "dia4-9.jpg", "dia4-10.jpg", "dia4-11.jpg", "dia4-12.jpg", "dia4-13.jpg", "dia4-14.jpg", "dia4-15.jpg"],
   "5:elregal": ["dia5-elregal-1.jpg"],
   "5:empuriabrava": ["dia5-empuriabrava-1.jpg", "dia5-empuriabrava-2.jpg", "dia5-empuriabrava-3.jpg", "dia5-empuriabrava-4.jpg", "dia5-empuriabrava-5.jpg"],
@@ -5243,7 +5306,8 @@ function showContent(d, animateStamp, parentDay){
       <div class="cr-fade-top"></div>
       <div class="cr-fade-bottom"></div>
       <div class="cr-mark">🤍</div>
-      ${list.length ? `<div class="cr-photo" id="crPhoto"><img src="${list[0]}" alt="${d.title}"></div>` : ''}
+      ${list[0] ? `<div class="cr-photo" id="crPhoto"><img src="${list[0]}" alt="${d.title}"></div>` : ''}
+      ${list[1] ? `<div class="cr-photo cr-photo2" id="crPhoto2"><img src="${list[1]}" alt="${d.title}"></div>` : ''}
       <div class="cr-line">
         <svg viewBox="0 0 300 52" preserveAspectRatio="none"><path d="${beat}"></path></svg>
       </div>
@@ -5254,6 +5318,8 @@ function showContent(d, animateStamp, parentDay){
       </div>`;
     const ph = rightBox.querySelector('#crPhoto');
     if(ph) ph.onclick = () => openNightLightbox(list, 0, d.title);
+    const ph2 = rightBox.querySelector('#crPhoto2');
+    if(ph2) ph2.onclick = () => openNightLightbox(list, 1, d.title);
     const gb = rightBox.querySelector('#crGridBtn');
     if(gb) gb.onclick = () => openGridScreen(list, d.title);
     rightBox.querySelector('#crBreathBtn').onclick = openBreathScreen;
