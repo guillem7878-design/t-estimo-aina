@@ -3683,6 +3683,19 @@
   }
   .wa-photo-bubble .wa-meta{ padding-right: 4px; }
 
+
+  /* ---- retol dins de la porta oberta ---- */
+  .hm-caption{
+    position:absolute; left:0; right:0; bottom:0;
+    padding: 18px 8px 10px;
+    text-align:center;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.58rem; letter-spacing:3px;
+    color: rgba(250,244,230,0.92);
+    background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+    pointer-events:none;
+  }
+
 </style>
 </head>
 <body>
@@ -4348,6 +4361,7 @@ const PHOTOS = {
   "9": ["dia9-1.jpg", "dia9-2.jpg", "dia9-3.jpg", "dia9-4.jpg"],
   "10": ["dia10-1.jpg", "dia10-2.jpg"],
   "11": ["dia11-1.jpg", "dia11-2.jpg"],
+  "13": ["dia13-1.jpg"],
 };
 /* ==== FOTOS-FINAL ==== */
 (function(){
@@ -5114,8 +5128,8 @@ function showContent(d, animateStamp, parentDay){
     const seals = rightBox.querySelector('#hmSeals');
     const close = rightBox.querySelector('#hmClose');
     inside.innerHTML = list.length
-      ? `<img src="${list[0]}" alt="${d.title}">`
-      : `<div class="hm-empty">JA ETS A CASA</div>`;
+      ? `<img src="${list[0]}" alt="${d.title}"><div class="hm-caption">JA TORNEM A SER JUNTS</div>`
+      : `<div class="hm-empty">JA TORNEM A SER JUNTS</div>`;
 
     env.onclick = e => {
       e.stopPropagation();
